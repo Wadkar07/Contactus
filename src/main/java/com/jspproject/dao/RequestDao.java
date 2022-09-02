@@ -17,10 +17,10 @@ public class RequestDao extends HttpServlet {
 	public static final String USERNAME = "postgres";
 	public static final String PASSWORD = "123";
 	
-	public void ContactUsReques(Request request){
-		String fullName = req.getParameter("fullName");
-		String email = req.getParameter("email");
-		String message = req.getParameter("message");
+	public void contactUsRequest(Request request){
+		String fullName = request.getFullName();
+		String email = request.getEmail();
+		String message = request.getMessage();
 		Connection c = null;
 		Statement stmt = null;
 		try {
