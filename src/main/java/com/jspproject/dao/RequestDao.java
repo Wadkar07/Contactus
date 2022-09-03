@@ -2,7 +2,6 @@ package com.jspproject.dao;
 
 import com.jspproject.model.Request;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

@@ -27,13 +27,11 @@ public class UserDao extends HttpServlet{
 		String userName = user.getUserName();
 		String password = user.getPassword();
 		Connection c = null;
-		Statement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			c = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
 			Statement statement = c.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM admin_login");
-//			resultSet.next();
 			while(resultSet.next()) {
 				User credential = new User();
 				credential.setUserName(resultSet.getString(1));

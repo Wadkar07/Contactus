@@ -25,6 +25,7 @@ public class DashboardServlet extends HttpServlet{
 	public static final String PASSWORD = "123";
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("Cache-Control", "no-cache,no-Store");
 		HttpSession session = req.getSession();
 		String password = (String)session.getAttribute("password");
 		if(password!=null) {

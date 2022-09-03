@@ -26,6 +26,9 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("Cache-Control", "no-cache,no-Store");
+		HttpSession session = req.getSession();
+		session.removeAttribute("password");
 		req.getRequestDispatcher("/login.jsp").forward(req, resp);
 	}
 
@@ -43,7 +46,6 @@ public class LoginServlet extends HttpServlet {
 		try {
 			if (userDao.checkCredentials(user)) {
 				session.setAttribute("password", password);
-
 				resp.sendRedirect(req.getContextPath() + "/dashboard");
 			} else {
 				session.removeAttribute("password");
