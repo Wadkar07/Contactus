@@ -41,7 +41,7 @@ public class UserDao extends HttpServlet{
 				userCredentials.add(credential);
 			}
 			for(User users : userCredentials) {
-				if((user.getUserName()).equals(userName)&&(user.getPassword().equals(password)))
+				if((users.getUserName()).equals(userName)&&(users.getPassword().equals(password)))
 					return true;
 			}
 			

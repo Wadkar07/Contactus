@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.jspproject.dao.RequestDao;
 import com.jspproject.model.Request;
@@ -24,24 +25,30 @@ public class DashboardServlet extends HttpServlet{
 	public static final String PASSWORD = "123";
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDao requestDao = new RequestDao(); 	
-		List<Request> contactRequests = requestDao.requestData();
-		List<Request> activeRequests = new ArrayList<>();
-		List<Request> archiveRequests = new ArrayList<>();
-		for(Request contactrequest: contactRequests) {
-			Request request = new Request();
-			request.setId(contactrequest.getId());
-			request.setFullName(contactrequest.getFullName());
-			request.setEmail(contactrequest.getEmail());
-			request.setMessage(contactrequest.getMessage());
-			if(contactrequest.getStatus())
-				activeRequests.add(request);
-			else
-				archiveRequests.add(request);
+		HttpSession session = req.getSession();
+		String password = (String)session.getAttribute("password");
+		if(password!=null) {
+			RequestDao requestDao = new RequestDao(); 	
+			List<Request> contactRequests = requestDao.requestData();
+			List<Request> activeRequests = new ArrayList<>();
+			List<Request> archiveRequests = new ArrayList<>();
+			for(Request contactrequest: contactRequests) {
+				Request request = new Request();
+				request.setId(contactrequest.getId());
+				request.setFullName(contactrequest.getFullName());
+				request.setEmail(contactrequest.getEmail());
+				request.setMessage(contactrequest.getMessage());
+				if(contactrequest.getStatus())
+					activeRequests.add(request);
+				else
+					archiveRequests.add(request);
+			}
+			req.setAttribute("activeRequests", activeRequests);
+			req.setAttribute("archiveRequests", archiveRequests);
+			req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);	
 		}
-		req.setAttribute("activeRequests", activeRequests);
-		req.setAttribute("archiveRequests", archiveRequests);
-		req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
+		else
+			resp.sendRedirect(req.getContextPath()+"/login");
 	}
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
