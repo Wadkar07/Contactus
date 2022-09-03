@@ -22,15 +22,15 @@ public class RequestDao extends HttpServlet {
 		String email = request.getEmail();
 		String message = request.getMessage();
 		Connection c = null;
-		Statement stmt = null;
+		Statement statement = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			c = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
 			c.setAutoCommit(false);
-			stmt = c.createStatement();
+			statement = c.createStatement();
 			String sql = "INSERT INTO ACTIVE(full_name,email,message,active) " + "VALUES ('" + fullName + "', '" + email	+ "', '" + message + "','1' );";
-			stmt.executeUpdate(sql);
-			stmt.close();
+			statement.executeUpdate(sql);
+			statement.close();
 			c.commit();
 			c.close();
 		} catch (Exception e) {

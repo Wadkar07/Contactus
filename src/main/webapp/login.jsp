@@ -14,7 +14,7 @@
 			Please login for fetching data
 		</header>
 		<div>
-			<form action="admin/contactus" method="post">
+			<form action="${pageContext.request.contextPath}/login" method="post">
 				<section>
 					User Name <br> <input name="UserName" type="text" required>
 					<br>
