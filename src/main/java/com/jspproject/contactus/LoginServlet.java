@@ -38,8 +38,8 @@ public class LoginServlet extends HttpServlet{
 		user.setPassword(password);
 		try {
 			if(userDao.checkCredentials(user)) {
-				System.out.println("->");
-				resp.sendRedirect(req.getContextPath()+"/hashboard.jsp");
+				
+				resp.sendRedirect(req.getContextPath()+"/dashboard");
 			}
 			else
 				req.getRequestDispatcher("/login.jsp").forward(req, resp);
