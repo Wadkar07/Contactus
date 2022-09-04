@@ -1,16 +1,7 @@
 package com.jspproject.contactus;
 
 import com.jspproject.dao.UserDao;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,41 +9,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.jspproject.model.Request;
 import com.jspproject.model.User;
 
+@SuppressWarnings("serial")
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setHeader("Cache-Control", "no-cache,no-Store");
-		HttpSession session = req.getSession();
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Cache-Control", "no-cache,no-Store");
+		HttpSession session = request.getSession();
 		session.removeAttribute("password");
-		req.getRequestDispatcher("/login.jsp").forward(req, resp);
+		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		PrintWriter out = resp.getWriter();
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserDao userDao = new UserDao();
 		User user = new User();
 
-		String userName = req.getParameter("UserName");
-		String password = req.getParameter("Password");
+		String userName = request.getParameter("userName");
+		String password = request.getParameter("password");
+
 		user.setUserName(userName);
 		user.setPassword(password);
-		HttpSession session = req.getSession();
-		try {
-			if (userDao.checkCredentials(user)) {
-				session.setAttribute("password", password);
-				resp.sendRedirect(req.getContextPath() + "/dashboard");
-			} else {
-				session.removeAttribute("password");
-				resp.sendRedirect(req.getContextPath() +"/login");
-			}
-		} catch (Exception e) {
-			out.println(e.getMessage());
+
+		HttpSession session = request.getSession();
+
+		if (userDao.checkCredentials(user)) {
+			session.setAttribute("password", password);
+			response.sendRedirect(request.getContextPath() + "/dashboard");
+		} else {
+			response.sendRedirect(request.getContextPath() + "/login");
 		}
 	}
 }

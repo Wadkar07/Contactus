@@ -1,17 +1,15 @@
 <%@page import="com.jspproject.model.Request" %>
 <%@page import="com.jspproject.dao.RequestDao" %>
-<%@page import="java.util.ArrayList" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="cout" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html>
-<center>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>Dash Board</title>
 	</head>
-
 	<body>
 		<h1>Active</h1>
 		<table border="1">
@@ -21,19 +19,19 @@
 				<td>Message</td>
 				<td>Status</td>
 			</tr>
-			<c:forEach items="${activeRequests}" var="req">
+			<cout:forEach items="${activeRequests}" var="contactRequest">
 				<tr>
-					<td>${req.getFullName()}</td>
-					<td>${req.getEmail()}</td>
-					<td>${req.getMessage()}</td>
+					<td>${contactRequest.getFullName()}</td>
+					<td>${contactRequest.getEmail()}</td>
+					<td>${contactRequest.getMessage()}</td>
 					<td>
 						<form action="${pageContext.request.contextPath}/dashboard"
 							method="post">
-							<button name="id" value="${req.getId()}">Archive</button>
+							<button name="id" value="${contactRequest.getId()}">Archive</button>
 						</form>
 					</td>
 				</tr>
-			</c:forEach>
+			</cout:forEach>
 		</table>
 		<h1>Archive</h1>
 		<table border="1">
@@ -43,22 +41,19 @@
 				<td>Message</td>
 				<td>Status</td>
 			</tr>
-			<c:forEach items="${archiveRequests}" var="req">
+			<cout:forEach items="${archiveRequests}" var="contactRequest">
 				<tr>
-					<td>${req.getFullName()}</td>
-					<td>${req.getEmail()}</td>
-					<td>${req.getMessage()}</td>
+					<td>${contactRequest.getFullName()}</td>
+					<td>${contactRequest.getEmail()}</td>
+					<td>${contactRequest.getMessage()}</td>
 					<td>
 						<form action="${pageContext.request.contextPath}/dashboard"
 							method="post">
-							<button name="id" value="${req.getId()}">Active</button>
+							<button name="id" value="${contactRequest.getId()}">Active</button>
 						</form>
 					</td>
 				</tr>
-			</c:forEach>
+			</cout:forEach>
 		</table>
-
 	</body>
-</center>
-
 </html>
