@@ -1,4 +1,4 @@
-package com.jspproject.contactus;
+package com.jspproject.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,35 +27,37 @@ public class DashboardServlet extends HttpServlet {
 	public static final String PASSWORD = "123";
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		response.setHeader("Cache-Control", "no-cache,no-Store");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String password = (String) session.getAttribute("password");
 		if (password != null) {
 			RequestDao requestDao = new RequestDao();
-			
+
 			List<Request> contactRequests = requestDao.contactRequestData();
 			List<Request> activeRequests = new ArrayList<>();
 			List<Request> archiveRequests = new ArrayList<>();
-			
+
 			for (Request contact : contactRequests) {
 				Request contactRequest = new Request();
 				contactRequest.setId(contact.getId());
 				contactRequest.setFullName(contact.getFullName());
 				contactRequest.setEmail(contact.getEmail());
 				contactRequest.setMessage(contact.getMessage());
-			
+
 				if (contact.getStatus())
 					activeRequests.add(contactRequest);
 				else
 					archiveRequests.add(contactRequest);
 			}
-			
+
 			request.setAttribute("activeRequests", activeRequests);
 			request.setAttribute("archiveRequests", archiveRequests);
 			request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
-		} else
+		} else {
+			session.removeAttribute("password");
 			response.sendRedirect(request.getContextPath() + "/login");
+		}
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class DashboardServlet extends HttpServlet {
 			Connection connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
 			Statement statement = connection.createStatement();
 			ResultSet outputQuery = statement.executeQuery("SELECT active FROM active where id =" + idOfContactRequest);
-			
+
 			while (outputQuery.next()) {
 				if (outputQuery.getBoolean(1)) {
 					query = "UPDATE active set active='f' where id=" + idOfContactRequest;

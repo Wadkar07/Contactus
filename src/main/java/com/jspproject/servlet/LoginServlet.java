@@ -1,4 +1,4 @@
-package com.jspproject.contactus;
+package com.jspproject.servlet;
 
 import com.jspproject.dao.UserDao;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import com.jspproject.model.User;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Cache-Control", "no-cache,no-Store");
 		HttpSession session = request.getSession();
 		session.removeAttribute("password");
 		request.getRequestDispatcher("/login.jsp").forward(request, response);

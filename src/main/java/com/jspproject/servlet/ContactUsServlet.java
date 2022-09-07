@@ -1,4 +1,4 @@
-package com.jspproject.contactus;
+package com.jspproject.servlet;
 
 import com.jspproject.dao.RequestDao;
 import com.jspproject.model.Request;
